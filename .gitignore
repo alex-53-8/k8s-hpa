@@ -1,0 +1,4 @@
+*.kubeconfig
+.idea/
+target/
+**/**/.DS_Store
