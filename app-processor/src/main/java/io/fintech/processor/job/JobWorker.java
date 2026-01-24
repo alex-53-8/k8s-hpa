@@ -1,17 +1,31 @@
 package io.fintech.processor.job;
 
-public class JobWorker implements Runnable {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    private final JobDescription jobDescription;
+import java.util.Random;
 
-    public JobWorker(JobDescription jobDescription) {
-        this.jobDescription = jobDescription;
+public class JobWorker {
+
+    private static final Logger logger = LoggerFactory.getLogger(JobWorker.class);
+
+    private final JobDescription description;
+
+    public JobWorker(JobDescription description) {
+        this.description = description;
     }
 
-    @Override
-    public void run() {
+    public void process() {
+        logger.debug("Processing a job with ID {}", description.jobId());
+
         try {
-            Thread.sleep(jobDescription.duration()*1000L);
+            int min = 1;
+            int max = 600;
+            int randomNumber = new Random().nextInt(max + 1 - min) + min;
+
+            logger.info("a job {} will be processing {} seconds", description.jobId(), randomNumber);
+
+            Thread.sleep(randomNumber*1000L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -1,0 +1,30 @@
+server:
+  port: 9090
+
+# consumer
+processor:
+  max-threads: 4
+  metrics-names:
+    used-threads:
+      name: job_processor_threads_used
+      descr: how many thread are currently in use processing data
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+    queue: processor-tasks
+    exchange: processor-tasks-exchange
+    routing-key-pattern: processor.tasks.#
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
+
+logging:
+  level:
+    io.fintech: DEBUG

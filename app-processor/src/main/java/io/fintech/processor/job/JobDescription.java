@@ -1,6 +1,8 @@
 package io.fintech.processor.job;
 
+import java.util.UUID;
+
 public record JobDescription (
-        String name,
-        int duration
+        UUID jobId,
+        String name
 ) {}
