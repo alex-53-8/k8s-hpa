@@ -1,0 +1,44 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: processor-monitor
+  namespace: monitoring # Usually created in the monitoring NS
+  labels:
+    release: monitoring
+    app: processor
+spec:
+  selector:
+    matchLabels:
+      app: processor
+  namespaceSelector:
+    matchNames:
+      - app
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /actuator/prometheus
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-ingress
+  namespace: app
+  labels:
+    app: processor  
+spec:
+  podSelector:
+    matchLabels:
+      app: processor
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+    ports:
+    - protocol: TCP
+      port: 8080 # <--- The port your Java app listens on
+# wget http://processor-service.app.svc.cluster.local:8080/actuator/prometheus

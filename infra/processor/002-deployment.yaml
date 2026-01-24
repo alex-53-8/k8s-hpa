@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: processor
+  namespace: app
+  labels:
+    app: processor
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: processor
+  template:
+    metadata:
+      labels:
+        app: processor
+    spec:
+      containers:
+      - name: processor-container
+        image: processor:0.0.4
+        imagePullPolicy: Never
+        env:
+        - name: SERVER_PORT
+          value: "8080"
+        - name: spring_rabbitmq_host
+          value: 'rabbitmq-service.mq.svc.cluster.local'
+        ports:
+        - containerPort: 8080

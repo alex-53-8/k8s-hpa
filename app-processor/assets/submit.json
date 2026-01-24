@@ -1,4 +1,6 @@
 {
-  "name": "sample-job",
-  "duration": 60
+  "properties": {},
+  "routing_key":"processor.tasks.type1",
+  "payload":"{\"jobId\": \"__ID__\", \"name\": \"sample-job\"}",
+  "payload_encoding":"string"
 }

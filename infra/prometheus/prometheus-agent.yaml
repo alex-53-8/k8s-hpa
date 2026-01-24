@@ -1,0 +1,20 @@
+---
+
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: PrometheusAgent
+metadata:
+  name: prometheus-agent
+  namespace: monitoring
+spec:
+  podMonitorSelector:
+    matchLabels:
+      monitoring: prometheus
+  remoteWrite:
+    - url: "http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090/api/v1/write"
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 500m
